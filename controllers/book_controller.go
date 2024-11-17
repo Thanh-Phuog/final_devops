@@ -8,15 +8,25 @@ import (
 )
 
 // Hello route for testing purposes
-func Hello(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "Hello, welcome to the Book API!"})
-}
+//func Hello(c *gin.Context) {
+//	c.JSON(http.StatusOK, gin.H{"message": "Hello, welcome to the Book API!"})
+//}
 
 // Lấy tất cả sách
 func GetBooks(c *gin.Context) {
 	var books []models.Book
 	database.DB.Find(&books)
 	c.JSON(http.StatusOK, books)
+}
+
+//Tìm kiêm
+func SearchBooks(c *gin.Context) {
+	var books []models.Book
+	if title := c.Query("title"); title != "" {
+		database.DB.Where("title = ?", title).Find(&books)
+		c.JSON(http.StatusOK, books)
+	}
+	
 }
 
 // Thêm sách mới
